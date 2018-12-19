@@ -43,6 +43,25 @@ bot.dialog('/', function (session) {
     session.send('You said ' + session.message.text);
 });
 
+bot.use({
+    receive: (event, next) => {
+        const date = moment().format("h:mm:ss SSS a");
+        console.log(`${date}: Incoming message`.magenta);
+        next();
+    },
+    // disabling logs
+    botbuilder: (session, next) => {
+        session.logger.isEnabled = false;
+        next();
+    },
+    send : (event, next) => {
+        const date = moment().format("h:mm:ss SSS a");
+        console.log(`${date}: Outgoing message`.cyan);
+        next();
+    }
+})
+
+
 // ======== Custom Code =========
 counter = 0;
 server.use(restify.plugins.bodyParser());
